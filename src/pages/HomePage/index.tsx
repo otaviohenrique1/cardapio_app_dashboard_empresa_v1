@@ -3,31 +3,32 @@ import { useGlobalFilter, usePagination, useSortBy, useTable } from "react-table
 import { Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledButtonDropdown } from "reactstrap";
 import { Titulo } from "../../components/Titulo";
 import { BsFillGearFill } from "react-icons/bs";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import styled from "styled-components";
 import { CampoFiltroGlobalTabela } from "../../components/Filtros";
 import { ContainerApp } from "../../components/ContainerApp";
 import api from "../../utils/api";
-import { FormataValorMonetarioTexto } from "../../utils/utils";
 import { ExibePaginaInicioFim } from "../../components/Paginacao/ExibePaginaInicioFim";
 import { IrParaPagina } from "../../components/Paginacao/IrParaPagina";
 import { Paginacao } from "../../components/Paginacao/Paginacao";
 import { QuantidadeItemsPorPagina } from "../../components/Paginacao/QuantidadeItemsPorPagina";
 import { BotaoLink } from "../../components/Botoes";
 import { Tabela } from "../../components/Tabela";
+import { ModalErroDadosNaoCarregados } from "../../components/Modals";
+// import Swal from 'sweetalert2';
+// import withReactContent from 'sweetalert2-react-content';
 
-const SwalModal = withReactContent(Swal);
+// const SwalModal = withReactContent(Swal);
 
 export function HomePage() {
   const [data, setData] = useState<TabelaTypes[]>([]);
 
   useEffect(() => {
-    api.get('refeicao')
+    api.get('usuario')
       .then((item) => {
         setData(item.data)
       })
       .catch((erro) => {
+        ModalErroDadosNaoCarregados();
         console.error(erro);
       });
   }, []);
@@ -39,36 +40,26 @@ export function HomePage() {
       columns: useMemo(() => [{
         Header: () => null,
         isVisible: false,
-        id: 'refeicoes',
+        id: 'usuarios',
         hideHeader: false,
         columns: [
-          { Header: 'Codigo', accessor: 'id', id: 'id' },
+          { Header: 'id', accessor: 'id', id: 'id' },
           { Header: 'Nome', accessor: 'nome', id: 'nome' },
-          {
-            Header: 'Preço (R$)',
-            accessor: 'preco',
-            id: 'preco',
-            Cell: (cell) => {
-              let preco = cell.row.values['preco'];
-              let valorFormatado = FormataValorMonetarioTexto(preco);
-              return valorFormatado;
-            }
-          },
-          {
-            Header: 'Ativo',
-            accessor: 'ativo',
-            id: 'ativo',
-            Cell: (cell) => {
-              let status = cell.row.values['ativo'];
-              let refeicaoStatus = (status) ? 'Ativo' : 'Inativo';
-              return refeicaoStatus;
-            }
-          },
+          // {
+          //   Header: 'Ativo',
+          //   accessor: 'ativo',
+          //   id: 'ativo',
+          //   Cell: (cell) => {
+          //     let status = cell.row.values['ativo'];
+          //     let refeicaoStatus = (status) ? 'Ativo' : 'Inativo';
+          //     return refeicaoStatus;
+          //   }
+          // },
           {
             Header: () => null,
             id: 'menu_item',
             Cell: (cell) => {
-              const id_refeicao = cell.row.values['id'];
+              const id_empresa = cell.row.values['id'];
 
               return (
                 <UncontrolledButtonDropdownEstilizado>
@@ -78,12 +69,12 @@ export function HomePage() {
                   <DropdownMenu>
                     <DropdownItem>
                       <BotaoLink
-                        to={`/refeicao/${id_refeicao}`}
+                        to={`/empresa/${id_empresa}`}
                         color="light"
                         className="nav-link text-center"
                       >Exibir</BotaoLink>
                     </DropdownItem>
-                    <DropdownItem
+                    {/* <DropdownItem
                       className="nav-link text-center"
                       onClick={() => {
                         SwalModal.fire({
@@ -100,17 +91,17 @@ export function HomePage() {
                           let id = cell.row.index;
                           data.splice(id, 1);
                           setData([...data]);
-                          api.delete(`refeicao/${id_refeicao}`);
+                          api.delete(`usuario/${id_empresa}`);
                         });
                       }}
-                    >Excluir</DropdownItem>
+                    >Excluir</DropdownItem> */}
                   </DropdownMenu>
                 </UncontrolledButtonDropdownEstilizado>
               );
             }
           },
         ],
-      },], [data])
+      },], [/* data */])
       , data, initialState: { pageIndex: 0 },
     }, useGlobalFilter, useSortBy, usePagination);
 
@@ -118,12 +109,12 @@ export function HomePage() {
     <ContainerApp>
       <Row>
         <Col md={12} className="mt-3 mb-3">
-          <Titulo tag="h1">Lista de refeições</Titulo>
+          <Titulo tag="h1">Lista de empresas</Titulo>
         </Col>
         <Col md={12}>
           <Row>
             <Col md={6} className="d-flex justify-content-start">
-              <BotaoLink to="/refeicao/cadastro" color="primary">Nova Refeição</BotaoLink>
+              <BotaoLink to="/empresa/cadastro" color="primary">Nova empresa</BotaoLink>
             </Col>
             <Col md={6} className="d-flex justify-content-between align-items-center flex-row">
               <QuantidadeItemsPorPagina

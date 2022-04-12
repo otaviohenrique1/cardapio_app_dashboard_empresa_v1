@@ -2,38 +2,34 @@ import { FormikHelpers } from "formik";
 import { Col, Row } from "reactstrap";
 import { Titulo } from "../../../components/Titulo";
 import { ContainerApp } from "../../../components/ContainerApp";
-import { format } from "date-fns";
-import { EmpresaRefeicao } from "../../../components/Formularios/FormularioRefeicao";
+import { FormularioEmpresa } from "../../../components/Formularios/FormularioEmpresa";
 import { valoresIniciaisFormularioEmpresa, validacaoSchemaFormularioEmpresa } from "../../../utils/constantes";
+import { FormatadorDados } from "../../../utils/utils";
+import api from "../../../utils/api";
+import { ModalConfirmacaoCadastro, ModalErroCadastro } from "../../../components/Modals";
 
 export function EmpresaCadastro() {
   async function handleSubmit(values: FormularioEmpresaTypes, helpers: FormikHelpers<FormularioEmpresaTypes>) {
+    /* Alterar caso for colocar o atributo ativo */
+
     let nome = values.nome;
     let email = values.email;
     let senha = values.senha;
     // let ativo = String(values.ativo);
-    let data_cadastro = format(new Date(), 'yyyy-MM-dd');
-    let data_modificacao_cadastro = format(new Date(), 'yyyy-MM-dd');
-    
-    const data = {
-      nome,
-      email,
-      senha,
-      // ativo,
-      data_cadastro,
-      data_modificacao_cadastro
-    };
+    let data_cadastro = FormatadorDados.GeraDataFormata();
+    let data_modificacao_cadastro = FormatadorDados.GeraDataFormata();
 
-    console.log(data);
-    
-    /* Alterar */
-    // await api.post('refeicao', data)
-    //   .then(() => {
-    //     ModalConfirmacaoCadastro();
-    //   }).catch((error) => {
-    //     console.error(error);
-    //     ModalErroCadastro();
-    //   });
+    const data = { nome, email, senha, /* ativo, */ data_cadastro, data_modificacao_cadastro };
+
+    // console.log(data);
+
+    await api.post('usuario', data)
+      .then(() => {
+        ModalConfirmacaoCadastro();
+      }).catch((error) => {
+        ModalErroCadastro();
+        console.error(error);
+      });
 
     helpers.resetForm();
   }
@@ -44,7 +40,7 @@ export function EmpresaCadastro() {
         <Col md={12}>
           <Titulo tag="h1">Empresa Cadastro</Titulo>
         </Col>
-        <EmpresaRefeicao
+        <FormularioEmpresa
           initialValues={valoresIniciaisFormularioEmpresa}
           validationSchema={validacaoSchemaFormularioEmpresa}
           onSubmit={handleSubmit}

@@ -3,10 +3,8 @@ import { BiUserCircle } from "react-icons/bi";
 import { MdMenuBook } from "react-icons/md";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-
-const SwalModal = withReactContent(Swal);
+import { ModalMensagem } from "../Modals";
+import { Titulo } from "../Titulo";
 
 export interface UsuarioLogadoDataTypes {
   id: string;
@@ -36,22 +34,16 @@ export function HeaderApp(props: HeaderAppProps) {
   };
 
   function logout() {
-    SwalModal.fire({
-      title: "Deseja sair?",
-      buttonsStyling: false,
-      confirmButtonText: 'Sim',
-      showCancelButton: true,
-      cancelButtonText: 'Não',
-      customClass: {
-        confirmButton: 'btn btn-primary me-1',
-        cancelButton: 'btn btn-danger',
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        sessionStorage.clear();
-        navigate("/");
-      }
-    });
+    ModalMensagem("warning", "Aviso", "Deseja sair?")
+      .then((result) => {
+        if (result.isConfirmed) {
+          sessionStorage.clear();
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -68,16 +60,23 @@ export function HeaderApp(props: HeaderAppProps) {
           <NavItem>
             <Link to="/home" className="nav-link">Inicio</Link>
           </NavItem>
+          <NavItem>
+            <Link to="/administrador/lista" className="nav-link">Administradores</Link>
+          </NavItem>
           <Dropdown toggle={toggleDropdown} isOpen={dropdownAberto}>
             <DropdownToggle caret className="d-flex flex-row justify-content-center align-items-center">
-              <h6 className="m-0">{props.data_usuario_logado.nome}</h6>
+              <Titulo tag="h6" className="m-0">{props.data_usuario_logado.nome}</Titulo>
+              {/* <h6 className="m-0">{props.data_usuario_logado.nome}</h6> */}
               <BiUserCircle size={30} className="ms-2" />
             </DropdownToggle>
             <DropdownMenu dark>
               <DropdownItem>
                 <Link
-                  to={`/usuario/${props.data_usuario_logado.id}`}
+                  to={`/administrador/${props.data_usuario_logado.id}`}
                   className="nav-link"
+                  // onClick={() => {
+                  //   alert(`id => ${props.data_usuario_logado.id}`);
+                  // }}
                 >Perfil</Link>
               </DropdownItem>
               <DropdownItem divider />

@@ -15,7 +15,8 @@ export function QuantidadeItemsPorPagina(props: QuantidadeItemsPorPaginaProps) {
       <select
         value={props.pageSize}
         onChange={event => {
-          props.setPageSize(Number(event.target.value))
+          const page_size = Number(event.target.value);
+          props.setPageSize(page_size)
         }}>
         {listaValoresQuantidadePagina.map((pageSize) => (
           <option value={pageSize} key={pageSize}>{pageSize}</option>

@@ -6,11 +6,9 @@ import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
 import { Botao, BotaoLink } from "../../components/Botoes";
 import { dadosIniciaisFormularioLogin, schemaValidacaoFormularioLogin } from "../../utils/constantes";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { sha512 } from "../../utils/utils";
+import { FormatadorDados } from "../../utils/utils";
 import { useState } from "react";
-const SwalModal = withReactContent(Swal);
+import { ModalMensagem } from "../../components/Modals";
 
 export function Login() {
   let navigate = useNavigate();
@@ -19,9 +17,9 @@ export function Login() {
 
   async function onSubmit(values: FormularioLoginTypes) {
     const email = values.email;
-    const senha = sha512(values.senha);
+    const senha = FormatadorDados.SenhaSHA512(values.senha);
 
-    await api.post('usuario/login',
+    await api.post('administrador/login',
       { email, senha },
       { auth: { username: email, password: senha } }
     ).then((data) => {
@@ -31,16 +29,9 @@ export function Login() {
       sessionStorage.setItem('nome', `${nome}`);
       navigate('/home');
     }).catch((error) => {
+      ModalMensagem("error", "Erro", "Login inválido!");
+      console.error(error);
       setErroMensagem(error.response.data.message);
-      SwalModal.fire({
-        title: "Login inválido",
-        html: <p>{error.response.data.message}</p>,
-        buttonsStyling: false,
-        confirmButtonText: 'Fechar',
-        customClass: {
-          confirmButton: 'btn btn-primary'
-        },
-      });
     });
   }
 
@@ -96,7 +87,7 @@ export function Login() {
                     <ButtonGroup>
                       <Botao color="primary" type="submit">Entrar</Botao>
                       <Botao color="danger" type="reset">Limpar</Botao>
-                      <BotaoLink to="/usuario/cadastro" color="success">Novo usuario</BotaoLink>
+                      <BotaoLink to="/administrador/cadastro" color="success">Novo usuario</BotaoLink>
                     </ButtonGroup>
                   </Col>
                 </Row>

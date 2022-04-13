@@ -3,7 +3,7 @@ import { BiUserCircle } from "react-icons/bi";
 import { MdMenuBook } from "react-icons/md";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ModalMensagem } from "../Modals";
+import { ModalConfirmacao } from "../Modals";
 import { Titulo } from "../Titulo";
 
 export interface UsuarioLogadoDataTypes {
@@ -34,7 +34,7 @@ export function HeaderApp(props: HeaderAppProps) {
   };
 
   function logout() {
-    ModalMensagem("warning", "Aviso", "Deseja sair?")
+    ModalConfirmacao("warning", "Aviso", "Deseja sair?")
       .then((result) => {
         if (result.isConfirmed) {
           sessionStorage.clear();
@@ -49,9 +49,9 @@ export function HeaderApp(props: HeaderAppProps) {
   return (
     <Navbar color="dark" dark expand="sm" light>
       <NavbarBrand>
-        <Link to="/" className="nav-link d-flex flex-row">
+        <Link to="/home" className="nav-link d-flex flex-row">
           <MdMenuBook size={30} color="white" />
-          <span className="fw-bold ms-2 text-white">Cardapio</span>
+          <span className="fw-bold ms-2 text-white">Administração</span>
         </Link>
       </NavbarBrand>
       <NavbarToggler onClick={toggle} />

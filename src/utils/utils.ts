@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { SHA512, enc, lib, /* PBKDF2, */ AES } from "crypto-js";
+import { SHA512, enc, lib, /* PBKDF2, */ AES, format as format_crypto_js } from "crypto-js";
 
 export class ConversorListas {
   /**
@@ -161,7 +161,10 @@ export class FormatadorDados {
       .replace('.', ',');
     return resultado;
   }
+}
 
+export class FormatadorCrypto {
+  // Encrypt
   /**
    * Converte senha para um hash usando SHA512.
    * @param senha Valor do tipo string
@@ -171,16 +174,13 @@ export class FormatadorDados {
     const resultado = SHA512(senha).toString(enc.Hex);
     return resultado;
   }
-}
 
-export class FormatadorCrypto {
-  // Encrypt
   // var ciphertext = CryptoJS.AES.encrypt('my message', 'secret key 123').toString();
   static encrypt_message(mensagem: string | lib.WordArray) {
     const secret_key = "chave_teste"; /* alterar, colocar chave RSA */
     let resultado = AES
       .encrypt(mensagem, secret_key)
-      .toString();
+      .toString(format_crypto_js.OpenSSL);
     return resultado;
   }
 

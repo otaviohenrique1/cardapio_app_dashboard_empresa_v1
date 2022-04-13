@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
 import { Botao, BotaoLink } from "../../components/Botoes";
 import { dadosIniciaisFormularioLogin, schemaValidacaoFormularioLogin } from "../../utils/constantes";
-import { FormatadorDados } from "../../utils/utils";
+import { FormatadorCrypto } from "../../utils/utils";
 import { useState } from "react";
 import { ModalMensagem } from "../../components/Modals";
 
@@ -17,7 +17,7 @@ export function Login() {
 
   async function onSubmit(values: FormularioLoginTypes) {
     const email = values.email;
-    const senha = FormatadorDados.SenhaSHA512(values.senha);
+    const senha = FormatadorCrypto.SenhaSHA512(values.senha);
 
     await api.post('administrador/login',
       { email, senha },

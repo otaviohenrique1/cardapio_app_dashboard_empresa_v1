@@ -6,7 +6,7 @@ import { FormularioEmpresa } from "../../../components/Formularios/FormularioEmp
 import { valoresIniciaisFormularioEmpresa, validacaoSchemaFormularioEmpresa } from "../../../utils/constantes";
 import { FormatadorDados } from "../../../utils/utils";
 import api from "../../../utils/api";
-import { ModalConfirmacaoCadastro, ModalErroCadastro } from "../../../components/Modals";
+import { ModalSucessoCadastro, ModalErroCadastro } from "../../../components/Modals";
 
 export function EmpresaCadastro() {
   async function handleSubmit(values: FormularioEmpresaTypes, helpers: FormikHelpers<FormularioEmpresaTypes>) {
@@ -25,7 +25,7 @@ export function EmpresaCadastro() {
 
     await api.post('usuario', data)
       .then(() => {
-        ModalConfirmacaoCadastro();
+        ModalSucessoCadastro();
       }).catch((error) => {
         ModalErroCadastro();
         console.error(error);

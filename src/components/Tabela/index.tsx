@@ -32,7 +32,7 @@ export function Tabela(props: TabelaProps) {
         </thead>
         <tbody {...props.getTableBodyProps()}>
           {(props.page.length === 0) ? (
-            <ListaVazia />
+            <TabelaVazia />
           ) : (
             props.page.slice(0, 20).map((row, i) => {
               props.prepareRow(row);
@@ -51,7 +51,7 @@ export function Tabela(props: TabelaProps) {
   );
 }
 
-function ListaVazia() {
+function TabelaVazia() {
   return (
     <tr className="bg-light">
       <td colSpan={7} className="text-center h1 p-5">Lista Vazia</td>

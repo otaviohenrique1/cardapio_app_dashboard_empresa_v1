@@ -13,8 +13,8 @@ export function IrParaPagina(props: IrParaPaginaProps) {
         type="number"
         defaultValue={props.pageIndex + 1}
         onChange={event => {
-          const numero_pagina = Number(event.target.value);
-          const pagina = event.target.value ? numero_pagina - 1 : 0
+          const numero_pagina = event.target.value;
+          const pagina = numero_pagina ? Number(numero_pagina) - 1 : 0
           props.gotoPage(pagina)
         }}
       />

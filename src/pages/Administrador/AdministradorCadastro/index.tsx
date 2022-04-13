@@ -6,8 +6,8 @@ import api from "../../../utils/api";
 import { format } from "date-fns";
 import { FormularioAdministrador } from "../../../components/Formularios/FormularioAdministrador";
 import { validacaoSchemaFormularioAdministrador, valoresIniciaisFormularioAdministrador } from "../../../utils/constantes";
-import { FormatadorDados } from "../../../utils/utils";
-import { ModalConfirmacaoCadastro, ModalErroCadastro } from "../../../components/Modals";
+import { FormatadorCrypto, FormatadorDados } from "../../../utils/utils";
+import { ModalSucessoCadastro, ModalErroCadastro } from "../../../components/Modals";
 
 export function AdministradorCadastro() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export function AdministradorCadastro() {
   async function onSubmit(values: FormularioAdministradorTypes, helpers: FormikHelpers<FormularioAdministradorTypes>) {
     let nome = values.nome;
     let email = values.email;
-    let senha = FormatadorDados.SenhaSHA512(values.senha);
+    let senha = FormatadorCrypto.SenhaSHA512(values.senha);
     let data_cadastro = FormatadorDados.GeraDataFormata();
     let data_modificacao_cadastro = format(new Date(), 'yyyy-MM-dd');
 
@@ -29,7 +29,7 @@ export function AdministradorCadastro() {
 
     await api.post('administrador', data)
       .then(() => {
-        ModalConfirmacaoCadastro();
+        ModalSucessoCadastro();
         navigate('/');
       }).catch((error) => {
         ModalErroCadastro();

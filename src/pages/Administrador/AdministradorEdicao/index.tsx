@@ -7,7 +7,7 @@ import { ContainerApp } from "../../../components/ContainerApp";
 import { FormularioAdministrador } from "../../../components/Formularios/FormularioAdministrador";
 import { FormatadorCrypto, FormatadorDados } from "../../../utils/utils";
 import { validacaoSchemaFormularioAdministrador, valoresIniciaisFormularioAdministrador } from "../../../utils/constantes";
-import { ModalConfirmacaoCadastro, ModalErroCadastro } from "../../../components/Modals";
+import { ModalSucessoCadastro, ModalErroCadastro } from "../../../components/Modals";
 
 export function AdministradorEdicao() {
   const [data, setData] = useState<FormularioAdministradorTypes>(valoresIniciaisFormularioAdministrador);
@@ -38,7 +38,7 @@ export function AdministradorEdicao() {
   async function handleSubmit(values: FormularioAdministradorTypes) {
     let nome = values.nome;
     let email = values.email;
-    let senha = FormatadorDados.SenhaSHA512(values.senha);
+    let senha = FormatadorCrypto.SenhaSHA512(values.senha);
     let data_modificacao_cadastro = FormatadorDados.GeraDataFormata();
 
     const data = {
@@ -50,7 +50,7 @@ export function AdministradorEdicao() {
     };
 
     await api.put(`administrador/${id}`, data).then(() => {
-      ModalConfirmacaoCadastro();
+      ModalSucessoCadastro();
       navigation(`/administrador/${id}`);
     }).catch((error) => {
       ModalErroCadastro();

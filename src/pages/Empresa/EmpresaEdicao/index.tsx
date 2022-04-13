@@ -7,7 +7,7 @@ import { ContainerApp } from "../../../components/ContainerApp";
 import { validacaoSchemaFormularioEmpresa, valoresIniciaisFormularioEmpresa } from "../../../utils/constantes";
 import { FormularioEmpresa } from "../../../components/Formularios/FormularioEmpresa";
 import { FormatadorDados } from "../../../utils/utils";
-import { ModalConfirmacaoCadastro, ModalErroCadastro, ModalErroDadosNaoCarregados } from "../../../components/Modals";
+import { ModalSucessoCadastro, ModalErroCadastro, ModalErroDadosNaoCarregados } from "../../../components/Modals";
 
 export function EmpresaEdicao() {
   const [data, setData] = useState<FormularioEmpresaTypes>(valoresIniciaisFormularioEmpresa);
@@ -53,7 +53,7 @@ export function EmpresaEdicao() {
       'senha': senha,
       'data_modificacao_cadastro': data_modificacao_cadastro,
     }).then(() => {
-      ModalConfirmacaoCadastro();
+      ModalSucessoCadastro();
       navigation(`/empresa/${id}`);
     }).catch((error) => {
       ModalErroCadastro();

@@ -55,7 +55,7 @@ export function ModalMensagem(icone: SweetAlertIcon, titulo: string, mensagem: s
  * Modal de confirmação de cadastro
  * @returns Modal SwalModal: typeof Swal & ReactSweetAlert
  */
-export function ModalConfirmacaoCadastro() {
+export function ModalSucessoCadastro() {
   return ModalMensagem("success", "Salvo", "Cadastro realizado com sucesso!");
 }
 

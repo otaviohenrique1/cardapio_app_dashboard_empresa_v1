@@ -4,13 +4,14 @@ import api from "../../../utils/api";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContainerApp } from "../../../components/ContainerApp";
-import { validacaoSchemaFormularioEmpresa, valoresIniciaisFormularioEmpresa } from "../../../utils/constantes";
+import { valoresIniciaisFormularioEmpresa } from "../../../utils/constantes";
 import { FormularioEmpresa } from "../../../components/Formularios/FormularioEmpresa";
-import { FormatadorDados } from "../../../utils/utils";
 import { ModalSucessoCadastro, ModalErroCadastro, ModalErroDadosNaoCarregados } from "../../../components/Modals";
+import { validacaoSchemaFormularioEmpresa } from "../../../utils/ValidacaoSchemas";
+import { FormatadorDados } from "../../../utils/FormatadorDados";
 
 export function EmpresaEdicao() {
-  const [data, setData] = useState<FormularioEmpresaTypes>(valoresIniciaisFormularioEmpresa);
+  const [data, setData] = useState<EmpresaTypes>(valoresIniciaisFormularioEmpresa);
   const navigation = useNavigate();
 
   let { id } = useParams();
@@ -32,33 +33,34 @@ export function EmpresaEdicao() {
       });
   }, [id]);
 
-  const dadosDaEmpresa: FormularioAdministradorTypes = {
+  const dadosDaEmpresa: AdministradorTypes = {
     nome: data.nome || "",
     email: data.email || "",
     senha: data.senha || "",
     // ativo: data.ativo || false,
   };
 
-  async function handleSubmit(values: FormularioAdministradorTypes) {
-    const nome = values.nome;
-    const email = values.email;
-    const senha = values.senha;
+  async function handleSubmit(values: AdministradorTypes) {
+    const { nome, email, senha } = values;
     // const ativo = values.ativo;
-    let data_modificacao_cadastro = FormatadorDados.GeraDataComHoraFormata();
+    let senha_formatada = FormatadorDados.FormataExibicaoSenha(senha, 12);
+    let data_modificacao_cadastro = FormatadorDados.GeradorDataHoraFormatada("yyyy-MM-dd HH:mm:ss");
 
-    await api.put(`usuario/${id}`, {
+    const data = {
       'id': id,
       'nome': nome,
       'email': email,
-      'senha': senha,
+      'senha': senha_formatada,
       'data_modificacao_cadastro': data_modificacao_cadastro,
-    }).then(() => {
-      ModalSucessoCadastro();
-      navigation(`/empresa/${id}`);
-    }).catch((error) => {
-      ModalErroCadastro();
-      console.error(error);
-    });
+    };
+    await api.put(`usuario/${id}`, data)
+      .then(() => {
+        ModalSucessoCadastro();
+        navigation(`/empresa/${id}`);
+      }).catch((error) => {
+        ModalErroCadastro();
+        console.error(error);
+      });
   }
 
   return (

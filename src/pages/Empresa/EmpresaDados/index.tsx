@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import { Col, ListGroup, Row } from "reactstrap";
 import { ContainerApp } from "../../../components/ContainerApp";
 import { Titulo } from "../../../components/Titulo";
-import api from "../../../utils/api";
-import { ItemListaFichaDados } from "../../../components/Lista";
-import { BotaoLink } from "../../../components/Botoes";
-import { FormatadorDados } from "../../../utils/utils";
+import { ItemListaFichaDados } from "../../../components/Lista/ItemListaFichaDados";
+import { BotaoLink } from "../../../components/Botoes/BotaoLink";
 import { ModalErroDadosNaoCarregados } from "../../../components/Modals";
+import api from "../../../utils/api";
+import { FormatadorDados } from "../../../utils/utils";
 import { valoresIniciaisEmpresaDados } from "../../../utils/constantes";
 
 export function EmpresaDados() {
@@ -19,14 +19,21 @@ export function EmpresaDados() {
       .then((item) => {
         if (!id) { return; }
 
-        const nome = item.data.nome;
-        const email = item.data.email;
-        const senha = FormatadorDados.FormataExibicaoSenha(String(item.data.senha), 12);
-        const codigo = item.data.codigo;
-        const data_cadastro = FormatadorDados.FormataData(item.data.data_cadastro);
-        const data_modificacao_cadastro = FormatadorDados.FormataData(item.data.data_cadastro);
+        const { nome, email, senha, codigo, data_cadastro, data_modificacao_cadastro } = item.data;
 
-        const data = { id, nome, email, senha, codigo, data_cadastro, data_modificacao_cadastro };
+        const senha_formatada = FormatadorDados.FormataExibicaoSenha(senha, 12);
+        const data_cadastro_formatada = FormatadorDados.FormataData(data_cadastro);
+        const data_modificacao_cadastro_formatada = FormatadorDados.FormataData(data_modificacao_cadastro);
+
+        const data = {
+          id,
+          nome,
+          email,
+          senha: senha_formatada,
+          codigo,
+          data_cadastro: data_cadastro_formatada,
+          data_modificacao_cadastro: data_modificacao_cadastro_formatada
+        };
 
         setData(data);
       })

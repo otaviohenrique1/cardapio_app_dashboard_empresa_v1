@@ -1,38 +1,45 @@
-import { Col, Container, Row, ButtonGroup, Card, CardBody, CardHeader, CardFooter, Alert } from "reactstrap";
-import { Titulo } from "../../components/Titulo";
-import { Form, Formik } from "formik";
-import { CampoInput } from "../../components/Campos/CampoInput";
 import { useNavigate } from "react-router-dom";
+import { Col, Container, Row, ButtonGroup, Card, CardBody, CardHeader, CardFooter } from "reactstrap";
+import { Form, Formik } from "formik";
+import { Titulo } from "../../components/Titulo";
+import { CampoInput } from "../../components/Campos/CampoInput";
+import { Botao } from "../../components/Botoes/Botao";
+import { BotaoLink } from "../../components/Botoes/BotaoLink";
+import { ModalErroCadastro } from "../../components/Modals";
 import api from "../../utils/api";
-import { Botao, BotaoLink } from "../../components/Botoes";
-import { dadosIniciaisFormularioLogin, schemaValidacaoFormularioLogin } from "../../utils/constantes";
 import { FormatadorCrypto } from "../../utils/utils";
-import { useState } from "react";
-import { ModalMensagem } from "../../components/Modals";
+import { dadosIniciaisFormularioLogin } from "../../utils/constantes";
+import { schemaValidacaoFormularioLogin } from "../../utils/ValidacaoSchemas";
 
 export function Login() {
   let navigate = useNavigate();
 
-  const [erroMensagem, setErroMensagem] = useState<string>('');
+  async function onSubmit(values: LoginTypes) {
+    const { email, senha } = values;
+    const senha_formatada = FormatadorCrypto.mensagemSHA512(senha);
 
-  async function onSubmit(values: FormularioLoginTypes) {
-    const email = values.email;
-    const senha = FormatadorCrypto.SenhaSHA512(values.senha);
+    const data = {
+      email,
+      senha: senha_formatada
+    };
+    const auth = {
+      auth: {
+        username: email,
+        password: senha_formatada
+      }
+    };
 
-    await api.post('administrador/login',
-      { email, senha },
-      { auth: { username: email, password: senha } }
-    ).then((data) => {
-      const id = data.data.data_user.id;
-      const nome = data.data.data_user.nome;
-      sessionStorage.setItem('id', `${id}`);
-      sessionStorage.setItem('nome', `${nome}`);
-      navigate('/home');
-    }).catch((error) => {
-      ModalMensagem("error", "Erro", "Login inválido!");
-      console.error(error);
-      setErroMensagem(error.response.data.message);
-    });
+    await api.post('administrador/login', data, auth)
+      .then((data) => {
+        const { id, nome } = data.data.data_user;
+        sessionStorage.setItem('id', String(id));
+        sessionStorage.setItem('nome', String(nome));
+        navigate('/home');
+      })
+      .catch((error) => {
+        ModalErroCadastro();
+        console.error(error);
+      });
   }
 
   return (
@@ -54,17 +61,14 @@ export function Login() {
               </CardHeader>
               <CardBody>
                 <Row>
-                  {(erroMensagem.length !== 0) ? (<Alert color="danger">{erroMensagem}</Alert>) : null}
-                  <Col md={12}>
-                  </Col>
                   <CampoInput
                     md={12}
                     type="text"
                     id="email"
                     name="email"
                     value={values.email}
-                    label="E-mail"
-                    placeholder="Digite o seu e-mail"
+                    label="Email"
+                    placeholder="Digite o seu email"
                     error={errors.email}
                     touched={touched.email}
                   />

@@ -164,13 +164,12 @@ export class FormatadorDados {
 }
 
 export class FormatadorCrypto {
-  // Encrypt
   /**
    * Converte senha para um hash usando SHA512.
    * @param senha Valor do tipo string
    * @return Valor hash
    */
-  static SenhaSHA512(senha: string) {
+  static mensagemSHA512(senha: string) {
     const resultado = SHA512(senha).toString(enc.Hex);
     return resultado;
   }

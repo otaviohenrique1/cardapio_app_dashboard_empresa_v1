@@ -1,23 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 import { Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledButtonDropdown } from "reactstrap";
-import { Titulo } from "../../components/Titulo";
-import { BsFillGearFill } from "react-icons/bs";
 import styled from "styled-components";
+import { BsFillGearFill } from "react-icons/bs";
+import { Titulo } from "../../components/Titulo";
 import { CampoFiltroGlobalTabela } from "../../components/Filtros";
 import { ContainerApp } from "../../components/ContainerApp";
-import api from "../../utils/api";
 import { ExibePaginaInicioFim } from "../../components/Paginacao/ExibePaginaInicioFim";
 import { IrParaPagina } from "../../components/Paginacao/IrParaPagina";
 import { Paginacao } from "../../components/Paginacao/Paginacao";
 import { QuantidadeItemsPorPagina } from "../../components/Paginacao/QuantidadeItemsPorPagina";
-import { BotaoLink } from "../../components/Botoes";
+import { BotaoLink } from "../../components/Botoes/BotaoLink";
 import { Tabela } from "../../components/Tabela";
 import { ModalErroDadosNaoCarregados } from "../../components/Modals";
-// import Swal from 'sweetalert2';
-// import withReactContent from 'sweetalert2-react-content';
-
-// const SwalModal = withReactContent(Swal);
+import api from "../../utils/api";
 
 export function HomePage() {
   const [data, setData] = useState<TabelaTypes[]>([]);
@@ -43,8 +39,16 @@ export function HomePage() {
         id: 'usuarios',
         hideHeader: false,
         columns: [
-          { Header: 'id', accessor: 'id', id: 'id' },
-          { Header: 'Nome', accessor: 'nome', id: 'nome' },
+          {
+            Header: 'id',
+            accessor: 'id',
+            id: 'id'
+          },
+          {
+            Header: 'Nome',
+            accessor: 'nome',
+            id: 'nome'
+          },
           // {
           //   Header: 'Ativo',
           //   accessor: 'ativo',
@@ -74,27 +78,6 @@ export function HomePage() {
                         className="nav-link text-center"
                       >Exibir</BotaoLink>
                     </DropdownItem>
-                    {/* <DropdownItem
-                      className="nav-link text-center"
-                      onClick={() => {
-                        SwalModal.fire({
-                          title: "Excluir",
-                          buttonsStyling: false,
-                          confirmButtonText: 'Sim',
-                          showCancelButton: true,
-                          cancelButtonText: 'Não',
-                          customClass: {
-                            confirmButton: 'btn btn-primary me-1',
-                            cancelButton: 'btn btn-danger',
-                          },
-                        }).then(() => {
-                          let id = cell.row.index;
-                          data.splice(id, 1);
-                          setData([...data]);
-                          api.delete(`usuario/${id_empresa}`);
-                        });
-                      }}
-                    >Excluir</DropdownItem> */}
                   </DropdownMenu>
                 </UncontrolledButtonDropdownEstilizado>
               );

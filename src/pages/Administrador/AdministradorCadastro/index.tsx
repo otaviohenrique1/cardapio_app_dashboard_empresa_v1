@@ -1,35 +1,35 @@
-import { FormikHelpers } from "formik";
-import { Col, Container, Row } from "reactstrap";
-import { Titulo } from "../../../components/Titulo";
 import { useNavigate } from "react-router-dom";
-import api from "../../../utils/api";
-import { format } from "date-fns";
+import { Col, Container, Row } from "reactstrap";
+import { FormikHelpers } from "formik";
+import { Titulo } from "../../../components/Titulo";
 import { FormularioAdministrador } from "../../../components/Formularios/FormularioAdministrador";
-import { validacaoSchemaFormularioAdministrador, valoresIniciaisFormularioAdministrador } from "../../../utils/constantes";
-import { FormatadorCrypto, FormatadorDados } from "../../../utils/utils";
+import { valoresIniciaisFormularioAdministrador } from "../../../utils/constantes";
 import { ModalSucessoCadastro, ModalErroCadastro } from "../../../components/Modals";
+import { validacaoSchemaFormularioAdministrador } from "../../../utils/ValidacaoSchemas";
+import api from "../../../utils/api";
+import { FormatadorDados } from "../../../utils/FormatadorDados";
+import { FormatadorCrypto } from "../../../utils/FormatadorCrypto";
 
 export function AdministradorCadastro() {
   const navigate = useNavigate();
 
-  async function onSubmit(values: FormularioAdministradorTypes, helpers: FormikHelpers<FormularioAdministradorTypes>) {
-    let nome = values.nome;
-    let email = values.email;
-    let senha = FormatadorCrypto.SenhaSHA512(values.senha);
-    let data_cadastro = FormatadorDados.GeraDataFormata();
-    let data_modificacao_cadastro = format(new Date(), 'yyyy-MM-dd');
+  async function onSubmit(values: AdministradorTypes, helpers: FormikHelpers<AdministradorTypes>) {
+    let { nome, email, senha } = values;
+    let senha_formatada = FormatadorCrypto.mensagemSHA512(senha);
+    let data_cadastro_formatada = FormatadorDados.GeradorDataHoraFormatada("yyyy-MM-dd HH:mm:ss");
 
     const data = {
       'nome': nome,
       'email': email,
-      'senha': senha,
-      'data_cadastro': data_cadastro,
-      'data_modificacao_cadastro': data_modificacao_cadastro,
+      'senha': senha_formatada,
+      'data_cadastro': data_cadastro_formatada,
+      'data_modificacao_cadastro': data_cadastro_formatada,
     };
 
     await api.post('administrador', data)
       .then(() => {
         ModalSucessoCadastro();
+        helpers.resetForm();
         navigate('/');
       }).catch((error) => {
         ModalErroCadastro();

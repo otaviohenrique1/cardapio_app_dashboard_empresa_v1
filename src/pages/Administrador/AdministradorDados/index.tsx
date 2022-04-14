@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Col, ListGroup, Row } from "reactstrap";
-import { BotaoLink } from "../../../components/Botoes";
+import { BotaoLink } from "../../../components/Botoes/BotaoLink";
 import { ContainerApp } from "../../../components/ContainerApp";
-import { ItemListaFichaDados } from "../../../components/Lista";
+import { ItemListaFichaDados } from "../../../components/Lista/ItemListaFichaDados";
 import { ModalErroDadosNaoCarregados } from "../../../components/Modals";
 import { Titulo } from "../../../components/Titulo";
 import api from "../../../utils/api";
 import { valoresIniciaisAdministradorDados } from "../../../utils/constantes";
-import { FormatadorDados } from "../../../utils/utils";
+import { FormatadorDados } from "../../../utils/FormatadorDados";
 
 export function AdministradorDados() {
   const [data, setData] = useState<AdministradorDadosTypes>(valoresIniciaisAdministradorDados);
@@ -19,15 +19,21 @@ export function AdministradorDados() {
 
     api.get(`administrador/${id}`)
       .then((item) => {
-        const nome = item.data.nome;
-        const email = item.data.email;
-        const senha = FormatadorDados.FormataExibicaoSenha(item.data.senha);
-        const codigo = item.data.codigo;
-        const data_cadastro = FormatadorDados.FormataDataHora(item.data.data_cadastro);
-        // const data_cadastro = item.data.data_cadastro;
-        // const data_modificacao_cadastro = FormatadorDados.FormataData(item.data.data_cadastro_cadastro);
-        const data_modificacao_cadastro = `Data 1 => ${item.data.data_cadastro_cadastro}`;
-        const data = { id, nome, email, senha, codigo, data_cadastro, data_modificacao_cadastro };
+        const { nome, email, senha, codigo, data_cadastro, data_modificacao_cadastro } = item.data;
+
+        const senha_formatada = FormatadorDados.FormataExibicaoSenha(senha);
+        const data_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_cadastro, "dd/MM/yyyy HH:mm:ss");
+        const data_modificacao_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_modificacao_cadastro, "dd/MM/yyyy HH:mm:ss") || 'Data2';
+
+        const data = {
+          id,
+          nome,
+          email,
+          senha: senha_formatada,
+          codigo,
+          data_cadastro: data_cadastro_formatada,
+          data_modificacao_cadastro: data_modificacao_cadastro_formatada
+        };
 
         setData(data);
       })

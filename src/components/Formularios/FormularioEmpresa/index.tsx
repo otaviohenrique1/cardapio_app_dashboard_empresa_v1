@@ -1,14 +1,15 @@
 import { Form, Formik, FormikHelpers } from "formik";
 import { To } from "react-router-dom";
 import { ButtonGroup, Col, Row } from "reactstrap";
-import { Botao, BotaoLink } from "../../Botoes";
+import { Botao } from "../../Botoes/Botao";
+import { BotaoLink } from "../../Botoes/BotaoLink";
 // import { CampoCheckbox } from "../../Campos/CampoCheckbox";
 import { CampoInput } from "../../Campos/CampoInput";
 
 interface FormularioEmpresaProps {
-  initialValues: FormularioAdministradorTypes;
+  initialValues: AdministradorTypes;
   validationSchema: any;
-  onSubmit: (values: FormularioAdministradorTypes, helpers: FormikHelpers<FormularioAdministradorTypes>) => Promise<void>;
+  onSubmit: (values: AdministradorTypes, helpers: FormikHelpers<AdministradorTypes>) => Promise<void>;
   voltarLink: To;
   enableReinitialize: boolean;
 }

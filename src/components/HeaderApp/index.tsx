@@ -1,24 +1,14 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Nav, Navbar, NavItem, Collapse, DropdownItem, DropdownMenu, DropdownToggle, NavbarBrand, NavbarToggler, Dropdown } from "reactstrap";
 import { BiUserCircle } from "react-icons/bi";
 import { MdMenuBook } from "react-icons/md";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { ModalConfirmacao } from "../Modals";
 import { Titulo } from "../Titulo";
 
-export interface UsuarioLogadoDataTypes {
-  id: string;
-  nome: string;
-}
-
 interface HeaderAppProps {
-  data_usuario_logado: UsuarioLogadoDataTypes;
+  data_usuario_logado: UsuarioLogadoTypes;
 }
-
-export const dadosIniciaisUsuarioLogado: UsuarioLogadoDataTypes = {
-  id: '',
-  nome: ''
-};
 
 export function HeaderApp(props: HeaderAppProps) {
   const navigate = useNavigate();

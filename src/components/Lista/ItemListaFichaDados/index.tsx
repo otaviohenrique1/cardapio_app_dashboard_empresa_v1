@@ -1,7 +1,7 @@
 import { ListGroupItem } from "reactstrap";
 import { Titulo } from "../../Titulo";
 
-interface ItemListaFichaDadosProps {
+export interface ItemListaFichaDadosProps {
   titulo: string;
   valor: any;
 }

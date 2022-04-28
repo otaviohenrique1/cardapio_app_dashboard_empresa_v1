@@ -5,7 +5,7 @@ import { ContainerApp } from "../../../components/ContainerApp";
 import { FormularioEmpresa } from "../../../components/Formularios/FormularioEmpresa";
 import { valoresIniciaisFormularioEmpresa } from "../../../utils/constantes";
 import { ModalSucessoCadastro, ModalErroCadastro } from "../../../components/Modals";
-import api from "../../../utils/api";
+import { ApiCadastroEmpresa, ApiCadastroEmpresaTypes } from "../../../utils/api";
 import { FormatadorCrypto } from "../../../utils/FormatadorCrypto";
 import { FormatadorDados } from "../../../utils/FormatadorDados";
 import { validacaoSchemaFormularioEmpresa } from "../../../utils/ValidacaoSchemas";
@@ -19,7 +19,7 @@ export function EmpresaCadastro() {
     let data_hora_formatada = FormatadorDados.GeradorDataHoraFormatada("yyyy-MM-dd HH:mm:ss");
     // let ativo = String(values.ativo);
 
-    const data = {
+    const data: ApiCadastroEmpresaTypes = {
       nome,
       email,
       senha: senha_formatada,
@@ -28,7 +28,8 @@ export function EmpresaCadastro() {
       data_modificacao_cadastro: data_hora_formatada
     };
 
-    await api.post('usuario', data)
+    // await api.post('usuario', data)
+    await ApiCadastroEmpresa(data)
       .then(() => {
         ModalSucessoCadastro();
       }).catch((error) => {

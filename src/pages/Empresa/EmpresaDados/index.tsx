@@ -3,10 +3,10 @@ import { useParams } from "react-router-dom";
 import { Col, ListGroup, Row } from "reactstrap";
 import { ContainerApp } from "../../../components/ContainerApp";
 import { Titulo } from "../../../components/Titulo";
-import { ItemListaFichaDados } from "../../../components/Lista/ItemListaFichaDados";
+import { ItemListaFichaDados, ItemListaFichaDadosProps } from "../../../components/Lista/ItemListaFichaDados";
 import { BotaoLink } from "../../../components/Botoes/BotaoLink";
 import { ModalErroDadosNaoCarregados } from "../../../components/Modals";
-import api from "../../../utils/api";
+import { ApiBuscaDadosUmaEmpresa } from "../../../utils/api";
 import { FormatadorDados } from "../../../utils/utils";
 import { valoresIniciaisEmpresaDados } from "../../../utils/constantes";
 
@@ -15,7 +15,10 @@ export function EmpresaDados() {
   let { id } = useParams();
 
   useEffect(() => {
-    api.get(`usuario/${id}`)
+    if (!id) { return; }
+
+    // api.get(`usuario/${id}`)
+    ApiBuscaDadosUmaEmpresa(id)
       .then((item) => {
         if (!id) { return; }
 
@@ -43,6 +46,16 @@ export function EmpresaDados() {
       });
   }, [id]);
 
+  const { email, senha, codigo, data_cadastro, data_modificacao_cadastro } = data;
+
+  const item_lista_ficha_dados: ItemListaFichaDadosProps[] = [
+    { titulo:"Email", valor: email },
+    { titulo:"Senha", valor: senha },
+    { titulo:"Código", valor: codigo },
+    { titulo:"Data de cadastro", valor: data_cadastro },
+    { titulo:"Data de atualização do cadastro", valor: data_modificacao_cadastro },
+  ];
+
   return (
     <ContainerApp>
       <Row>
@@ -51,12 +64,13 @@ export function EmpresaDados() {
         </Col>
         <Col md={12}>
           <ListGroup>
-            <ItemListaFichaDados titulo="Email" valor={data.email} />
-            <ItemListaFichaDados titulo="Senha" valor={data.senha} />
-            <ItemListaFichaDados titulo="Código" valor={data.codigo} />
+            {item_lista_ficha_dados.map((item, index) => {
+              const { titulo, valor } = item;
+              return (
+                <ItemListaFichaDados key={index} titulo={titulo} valor={valor} />
+              );
+            })}
             {/* <ItemListaFichaDados titulo="Status" valor={(data.ativo) ? 'Ativo' : 'Inativo'} /> */}
-            <ItemListaFichaDados titulo="Data de cadastro" valor={data.data_cadastro} />
-            <ItemListaFichaDados titulo="Data de atualização do cadastro" valor={data.data_modificacao_cadastro} />
           </ListGroup>
         </Col>
         <Col md={12} className="d-flex justify-content-end mt-5">

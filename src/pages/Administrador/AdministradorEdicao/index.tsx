@@ -6,7 +6,7 @@ import { ContainerApp } from "../../../components/ContainerApp";
 import { FormularioAdministrador } from "../../../components/Formularios/FormularioAdministrador";
 import { ModalSucessoCadastro, ModalErroCadastro } from "../../../components/Modals";
 import { valoresIniciaisFormularioAdministrador } from "../../../utils/constantes";
-import api from "../../../utils/api";
+import { ApiBuscaDadosUmAdministrador, ApiEdicaoAdministrador } from "../../../utils/api";
 import { validacaoSchemaFormularioAdministrador } from "../../../utils/ValidacaoSchemas";
 import { FormatadorCrypto } from "../../../utils/FormatadorCrypto";
 import { FormatadorDados } from "../../../utils/FormatadorDados";
@@ -18,13 +18,14 @@ export function AdministradorEdicao() {
   let { id } = useParams();
 
   useEffect(() => {
-    api.get(`administrador/${id}`)
-      .then((item) => {
-        let nome = item.data.nome;
-        let email = item.data.email;
-        let senha = item.data.senha;
+    if (!id) { return; }
 
-        setData({ nome, email, senha });
+    // api.get(`administrador/${id}`)
+    ApiBuscaDadosUmAdministrador(id)
+      .then((item) => {
+        const { nome, email, senha } = item.data;
+        const data = { nome, email, senha };
+        setData(data);
       })
       .catch((error) => {
         console.error(error);
@@ -38,6 +39,8 @@ export function AdministradorEdicao() {
   };
 
   async function handleSubmit(values: AdministradorTypes) {
+    if (!id) { return; }
+
     let { nome, email, senha } = values;
 
     let senha_formatada = FormatadorCrypto.mensagemSHA512(senha);
@@ -51,7 +54,8 @@ export function AdministradorEdicao() {
       'data_modificacao_cadastro': data_modificacao_cadastro_formatada,
     };
 
-    await api.put(`administrador/${id}`, data)
+    // await api.put(`administrador/${id}`, data)
+    await ApiEdicaoAdministrador(data)
       .then(() => {
         ModalSucessoCadastro();
         navigation(`/administrador/${id}`);

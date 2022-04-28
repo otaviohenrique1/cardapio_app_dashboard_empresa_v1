@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { CellProps, Column, TableOptions, TableState, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 import { Col, DropdownItem, DropdownMenu, DropdownToggle, Row, UncontrolledButtonDropdown } from "reactstrap";
 import styled from "styled-components";
 import { BsFillGearFill } from "react-icons/bs";
@@ -13,13 +13,15 @@ import { QuantidadeItemsPorPagina } from "../../components/Paginacao/QuantidadeI
 import { BotaoLink } from "../../components/Botoes/BotaoLink";
 import { Tabela } from "../../components/Tabela";
 import { ModalErroDadosNaoCarregados } from "../../components/Modals";
-import api from "../../utils/api";
+import { ApiBuscaDadosTodasEmpresas } from "../../utils/api";
+import { To } from "react-router-dom";
 
 export function HomePage() {
   const [data, setData] = useState<TabelaTypes[]>([]);
 
   useEffect(() => {
-    api.get('usuario')
+    // api.get('usuario')
+    ApiBuscaDadosTodasEmpresas()
       .then((item) => {
         setData(item.data)
       })
@@ -29,64 +31,54 @@ export function HomePage() {
       });
   }, []);
 
+  const columns: readonly Column<TabelaTypes>[] = useMemo(() => [{
+    Header: () => null,
+    isVisible: false,
+    id: 'usuarios',
+    hideHeader: false,
+    columns: [
+      {
+        Header: 'id',
+        accessor: 'id',
+        id: 'id'
+      },
+      {
+        Header: 'Nome',
+        accessor: 'nome',
+        id: 'nome'
+      },
+      // {
+      //   Header: 'Ativo',
+      //   accessor: 'ativo',
+      //   id: 'ativo',
+      //   Cell: (cell) => {
+      //     let status = cell.row.values['ativo'];
+      //     let refeicaoStatus = (status) ? 'Ativo' : 'Inativo';
+      //     return refeicaoStatus;
+      //   }
+      // },
+      {
+        Header: () => null,
+        id: 'menu_item',
+        Cell: (cell: PropsWithChildren<CellProps<never, any>>) => {
+          const id_empresa = cell.row.values['id'];
+
+          return (
+            <HomePageItemDropdown to={`/empresa/${id_empresa}`} />
+          );
+        }
+      },
+    ],
+  },], []);
+
+  const initialState: Partial<TableState<TabelaTypes>> = { pageIndex: 0 };
+
+  const table_options: TableOptions<TabelaTypes> = { columns, data, initialState };
+
   const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow,
     state, setGlobalFilter, canPreviousPage, canNextPage, pageOptions,
     pageCount, gotoPage, nextPage, previousPage, setPageSize,
-    state: { pageIndex, pageSize }, } = useTable({
-      columns: useMemo(() => [{
-        Header: () => null,
-        isVisible: false,
-        id: 'usuarios',
-        hideHeader: false,
-        columns: [
-          {
-            Header: 'id',
-            accessor: 'id',
-            id: 'id'
-          },
-          {
-            Header: 'Nome',
-            accessor: 'nome',
-            id: 'nome'
-          },
-          // {
-          //   Header: 'Ativo',
-          //   accessor: 'ativo',
-          //   id: 'ativo',
-          //   Cell: (cell) => {
-          //     let status = cell.row.values['ativo'];
-          //     let refeicaoStatus = (status) ? 'Ativo' : 'Inativo';
-          //     return refeicaoStatus;
-          //   }
-          // },
-          {
-            Header: () => null,
-            id: 'menu_item',
-            Cell: (cell) => {
-              const id_empresa = cell.row.values['id'];
-
-              return (
-                <UncontrolledButtonDropdownEstilizado>
-                  <DropdownToggle caret className="caret-off d-flex justify-content-center align-items-center w-50 btn-success">
-                    <BsFillGearFill size={20} />
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem>
-                      <BotaoLink
-                        to={`/empresa/${id_empresa}`}
-                        color="light"
-                        className="nav-link text-center"
-                      >Exibir</BotaoLink>
-                    </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledButtonDropdownEstilizado>
-              );
-            }
-          },
-        ],
-      },], [/* data */])
-      , data, initialState: { pageIndex: 0 },
-    }, useGlobalFilter, useSortBy, usePagination);
+    state: { pageIndex, pageSize }, } = useTable(table_options, useGlobalFilter, useSortBy, usePagination);
 
   return (
     <ContainerApp>
@@ -141,6 +133,30 @@ export function HomePage() {
   );
 }
 
+interface HomePageItemDropdownProps {
+  to: To;
+}
+
+function HomePageItemDropdown(props: HomePageItemDropdownProps) {
+  const { to } = props;
+  return (
+    <UncontrolledButtonDropdownEstilizado>
+      <DropdownToggle caret className="caret-off d-flex justify-content-center align-items-center w-50 btn-success">
+        <BsFillGearFill size={20} />
+      </DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem>
+          <BotaoLink
+            to={to}
+            color="light"
+            className="nav-link text-center"
+          >Exibir</BotaoLink>
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledButtonDropdownEstilizado>
+  );
+}
+
 const UncontrolledButtonDropdownEstilizado = styled(UncontrolledButtonDropdown)`
   .caret-off::before {
     display: none;
@@ -152,3 +168,60 @@ const UncontrolledButtonDropdownEstilizado = styled(UncontrolledButtonDropdown)`
   
   width: 100%;
 `;
+
+/*
+columns: useMemo(() => [{
+  Header: () => null,
+  isVisible: false,
+  id: 'usuarios',
+  hideHeader: false,
+  columns: [
+    {
+      Header: 'id',
+      accessor: 'id',
+      id: 'id'
+    },
+    {
+      Header: 'Nome',
+      accessor: 'nome',
+      id: 'nome'
+    },
+    // {
+    //   Header: 'Ativo',
+    //   accessor: 'ativo',
+    //   id: 'ativo',
+    //   Cell: (cell) => {
+    //     let status = cell.row.values['ativo'];
+    //     let refeicaoStatus = (status) ? 'Ativo' : 'Inativo';
+    //     return refeicaoStatus;
+    //   }
+    // },
+    {
+      Header: () => null,
+      id: 'menu_item',
+      Cell: (cell) => {
+        const id_empresa = cell.row.values['id'];
+
+        return (
+          <UncontrolledButtonDropdownEstilizado>
+            <DropdownToggle caret className="caret-off d-flex justify-content-center align-items-center w-50 btn-success">
+              <BsFillGearFill size={20} />
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                <BotaoLink
+                  to={`/empresa/${id_empresa}`}
+                  color="light"
+                  className="nav-link text-center"
+                >Exibir</BotaoLink>
+              </DropdownItem>
+            </DropdownMenu>
+          </UncontrolledButtonDropdownEstilizado>
+        );
+      }
+    },
+  ],
+},], [
+  // data
+])
+*/

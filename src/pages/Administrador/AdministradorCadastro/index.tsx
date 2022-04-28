@@ -6,7 +6,7 @@ import { FormularioAdministrador } from "../../../components/Formularios/Formula
 import { valoresIniciaisFormularioAdministrador } from "../../../utils/constantes";
 import { ModalSucessoCadastro, ModalErroCadastro } from "../../../components/Modals";
 import { validacaoSchemaFormularioAdministrador } from "../../../utils/ValidacaoSchemas";
-import api from "../../../utils/api";
+import { ApiCadastroAdministrador, ApiCadastroAdministradorTypes } from "../../../utils/api";
 import { FormatadorDados } from "../../../utils/FormatadorDados";
 import { FormatadorCrypto } from "../../../utils/FormatadorCrypto";
 
@@ -18,7 +18,7 @@ export function AdministradorCadastro() {
     let senha_formatada = FormatadorCrypto.mensagemSHA512(senha);
     let data_cadastro_formatada = FormatadorDados.GeradorDataHoraFormatada("yyyy-MM-dd HH:mm:ss");
 
-    const data = {
+    const data: ApiCadastroAdministradorTypes = {
       'nome': nome,
       'email': email,
       'senha': senha_formatada,
@@ -26,7 +26,8 @@ export function AdministradorCadastro() {
       'data_modificacao_cadastro': data_cadastro_formatada,
     };
 
-    await api.post('administrador', data)
+    // await api.post('administrador', data)
+    await ApiCadastroAdministrador(data)
       .then(() => {
         ModalSucessoCadastro();
         helpers.resetForm();

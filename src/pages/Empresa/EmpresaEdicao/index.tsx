@@ -1,6 +1,6 @@
 import { Col, Row } from "reactstrap";
 import { Titulo } from "../../../components/Titulo";
-import api from "../../../utils/api";
+import { ApiBuscaDadosUmaEmpresa, ApiEdicaoEmpresa } from "../../../utils/api";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContainerApp } from "../../../components/ContainerApp";
@@ -17,14 +17,14 @@ export function EmpresaEdicao() {
   let { id } = useParams();
 
   useEffect(() => {
-    api.get(`usuario/${id}`)
+    if (!id) { return; }
+    // api.get(`usuario/${id}`)
+    ApiBuscaDadosUmaEmpresa(id)
       .then((item) => {
         const nome = item.data.nome;
         const email = item.data.email;
         const senha = item.data.senha;
-
         const data = { nome, email, senha };
-
         setData(data);
       })
       .catch((erro) => {
@@ -33,14 +33,8 @@ export function EmpresaEdicao() {
       });
   }, [id]);
 
-  const dadosDaEmpresa: AdministradorTypes = {
-    nome: data.nome || "",
-    email: data.email || "",
-    senha: data.senha || "",
-    // ativo: data.ativo || false,
-  };
-
   async function handleSubmit(values: AdministradorTypes) {
+    if (!id) { return; }
     const { nome, email, senha } = values;
     // const ativo = values.ativo;
     let senha_formatada = FormatadorDados.FormataExibicaoSenha(senha, 12);
@@ -53,7 +47,9 @@ export function EmpresaEdicao() {
       'senha': senha_formatada,
       'data_modificacao_cadastro': data_modificacao_cadastro,
     };
-    await api.put(`usuario/${id}`, data)
+
+    // await api.put(`usuario/${id}`, data)
+    ApiEdicaoEmpresa(data)
       .then(() => {
         ModalSucessoCadastro();
         navigation(`/empresa/${id}`);
@@ -62,6 +58,13 @@ export function EmpresaEdicao() {
         console.error(error);
       });
   }
+
+  const dadosDaEmpresa: AdministradorTypes = {
+    nome: data.nome || "",
+    email: data.email || "",
+    senha: data.senha || "",
+    // ativo: data.ativo || false,
+  };
 
   return (
     <ContainerApp>

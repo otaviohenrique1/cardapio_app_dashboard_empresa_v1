@@ -2,7 +2,7 @@ import { Field } from "formik";
 import { Col, Label, Alert } from "reactstrap";
 import { ColumnProps } from "reactstrap/types/lib/Col";
 
-interface CampoInputProps {
+export interface CampoInputProps {
   md: ColumnProps;
   label: string;
   id: string;

@@ -21,8 +21,8 @@ export function EmpresaEdicao() {
     // api.get(`usuario/${id}`)
     ApiBuscaDadosUmaEmpresa(id)
       .then((item) => {
-        const { nome, email, senha, ativo } = item.data;
-        const data = { nome, email, senha, ativo };
+        const { nome, email, senha, ativo, confirmacao_senha } = item.data;
+        const data = { nome, email, senha, ativo, confirmacao_senha };
         setData(data);
       })
       .catch((erro) => {
@@ -58,12 +58,17 @@ export function EmpresaEdicao() {
       });
   }
 
+  let { nome, email, senha, confirmacao_senha, ativo } = data;
+
   const dadosDaEmpresa: EmpresaTypes = {
-    nome: data.nome || "",
-    email: data.email || "",
-    senha: data.senha || "",
-    ativo: data.ativo || false,
+    nome: nome || "",
+    email: email || "",
+    senha: "",
+    confirmacao_senha: confirmacao_senha || "",
+    ativo: ativo || false,
   };
+
+  const senha_antiga = FormatadorDados.FormataExibicaoSenha(senha.slice(0, 12));
 
   return (
     <ContainerApp>
@@ -77,6 +82,8 @@ export function EmpresaEdicao() {
           onSubmit={handleSubmit}
           enableReinitialize={true}
           voltarLink={`/empresa/${id}`}
+          exibe_senha_antiga={true}
+          senha_antiga={senha_antiga}
         />
       </Row>
     </ContainerApp>

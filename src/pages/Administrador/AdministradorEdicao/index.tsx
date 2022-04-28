@@ -32,13 +32,6 @@ export function AdministradorEdicao() {
       });
   }, [id]);
 
-  const dadosDoUsuario: AdministradorTypes = {
-    nome: data.nome || "",
-    email: data.email || "",
-    senha: data.senha || "",
-    confirmacao_senha: data.confirmacao_senha || ""
-  };
-
   async function handleSubmit(values: AdministradorTypes) {
     if (!id) { return; }
 
@@ -67,6 +60,17 @@ export function AdministradorEdicao() {
       });
   }
 
+  let { nome, email, senha, confirmacao_senha } = data;
+
+  const dadosDoUsuario: AdministradorTypes = {
+    nome: nome || "",
+    email: email || "",
+    senha: "",
+    confirmacao_senha: confirmacao_senha || ""
+  };
+
+  const senha_antiga = FormatadorDados.FormataExibicaoSenha(senha.slice(0, 12));
+
   return (
     <ContainerApp>
       <Row>
@@ -79,6 +83,8 @@ export function AdministradorEdicao() {
           onSubmit={handleSubmit}
           enableReinitialize
           voltarLink={`/administrador/${id}`}
+          exibe_senha_antiga={true}
+          senha_antiga={senha_antiga}
         />
       </Row>
     </ContainerApp>

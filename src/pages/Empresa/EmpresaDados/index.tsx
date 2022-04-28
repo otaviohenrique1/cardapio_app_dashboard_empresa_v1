@@ -28,10 +28,11 @@ export function EmpresaDados() {
         const data_cadastro_formatada = FormatadorDados.FormataData(data_cadastro);
         const data_modificacao_cadastro_formatada = FormatadorDados.FormataData(data_modificacao_cadastro);
 
-        const data = {
+        const data: EmpresaDadosTypes = {
           id, nome, email, senha: senha_formatada, ativo, codigo,
           data_cadastro: data_cadastro_formatada,
-          data_modificacao_cadastro: data_modificacao_cadastro_formatada
+          data_modificacao_cadastro: data_modificacao_cadastro_formatada,
+          confirmacao_senha: ""
         };
 
         setData(data);

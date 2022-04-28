@@ -51,6 +51,7 @@ interface EmpresaTypes {
   nome: string;
   email: string;
   senha: string;
+  confirmacao_senha: string;
   ativo: boolean | string;
 }
 

@@ -27,7 +27,8 @@ export const valoresIniciaisFormularioEmpresa: EmpresaTypes = {
   nome: "",
   email: "",
   senha: "",
-  ativo: false
+  confirmacao_senha: "",
+  ativo: false,
 };
 
 export const valoresIniciaisAdministradorDados: AdministradorDadosTypes = {
@@ -50,7 +51,8 @@ export const valoresIniciaisEmpresaDados: EmpresaDadosTypes = {
   ativo: false,
   codigo: "",
   data_cadastro: "",
-  data_modificacao_cadastro: ""
+  data_modificacao_cadastro: "",
+  confirmacao_senha: ""
 };
 
 export const dadosIniciaisUsuarioLogado: UsuarioLogadoTypes = {

@@ -15,20 +15,22 @@ export const dadosIniciaisFormularioLogin: LoginTypes = {
   senha: ""
 };
 
-export const valoresIniciaisFormularioEmpresa: AdministradorTypes = {
+export const valoresIniciaisFormularioEmpresa: EmpresaTypes = {
   nome: "",
   email: "",
   senha: "",
+  ativo: false
 };
 
-export const valoresIniciaisAdministradorDados: AdministradorDadosTypes = {
+export const valoresIniciaisAdministradorDados: EmpresaDadosTypes = {
   id: "",
   nome: "",
   email: "",
   senha: "",
   codigo: "",
   data_cadastro: "",
-  data_modificacao_cadastro: ""
+  data_modificacao_cadastro: "",
+  ativo: false
 };
 
 /* Alterar se precisar colocar atributo cadastro ativo */
@@ -37,7 +39,7 @@ export const valoresIniciaisEmpresaDados: EmpresaDadosTypes = {
   nome: "",
   email: "",
   senha: "",
-  // ativo: false,
+  ativo: false,
   codigo: "",
   data_cadastro: "",
   data_modificacao_cadastro: ""

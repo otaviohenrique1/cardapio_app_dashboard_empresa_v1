@@ -68,6 +68,7 @@ interface AdministradorTypes {
   nome: string;
   email: string;
   senha: string;
+  confirmacao_senha: string;
 }
 
 interface AdministradorDadosTypes extends AdministradorTypes {

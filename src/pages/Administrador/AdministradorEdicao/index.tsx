@@ -23,8 +23,8 @@ export function AdministradorEdicao() {
     // api.get(`administrador/${id}`)
     ApiBuscaDadosUmAdministrador(id)
       .then((item) => {
-        const { nome, email, senha } = item.data;
-        const data = { nome, email, senha };
+        const { nome, email, senha, confirmacao_senha } = item.data;
+        const data = { nome, email, senha, confirmacao_senha };
         setData(data);
       })
       .catch((error) => {
@@ -36,6 +36,7 @@ export function AdministradorEdicao() {
     nome: data.nome || "",
     email: data.email || "",
     senha: data.senha || "",
+    confirmacao_senha: data.confirmacao_senha || ""
   };
 
   async function handleSubmit(values: AdministradorTypes) {

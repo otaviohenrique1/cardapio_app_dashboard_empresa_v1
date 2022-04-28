@@ -27,14 +27,15 @@ export function AdministradorDados() {
         const data_modificacao_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_modificacao_cadastro, "dd/MM/yyyy HH:mm:ss");
         // const data_modificacao_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_modificacao_cadastro, "dd/MM/yyyy HH:mm:ss") || 'Data2';
 
-        const data = {
+        const data: AdministradorDadosTypes = {
           id,
           nome,
           email,
           senha: senha_formatada,
           codigo,
           data_cadastro: data_cadastro_formatada,
-          data_modificacao_cadastro: data_modificacao_cadastro_formatada
+          data_modificacao_cadastro: data_modificacao_cadastro_formatada,
+          confirmacao_senha: ""
         };
 
         setData(data);

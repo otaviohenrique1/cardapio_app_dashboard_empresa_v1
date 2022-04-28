@@ -8,6 +8,14 @@ export const valoresIniciaisFormularioAdministrador: AdministradorTypes = {
   nome: "",
   email: "",
   senha: "",
+  confirmacao_senha: ""
+};
+
+export const valoresIniciaisFormularioEdicaoAdministrador: AdministradorTypes = {
+  nome: "",
+  email: "",
+  senha: "",
+  confirmacao_senha: ""
 };
 
 export const dadosIniciaisFormularioLogin: LoginTypes = {
@@ -22,7 +30,7 @@ export const valoresIniciaisFormularioEmpresa: EmpresaTypes = {
   ativo: false
 };
 
-export const valoresIniciaisAdministradorDados: EmpresaDadosTypes = {
+export const valoresIniciaisAdministradorDados: AdministradorDadosTypes = {
   id: "",
   nome: "",
   email: "",
@@ -30,7 +38,7 @@ export const valoresIniciaisAdministradorDados: EmpresaDadosTypes = {
   codigo: "",
   data_cadastro: "",
   data_modificacao_cadastro: "",
-  ativo: false
+  confirmacao_senha: ""
 };
 
 /* Alterar se precisar colocar atributo cadastro ativo */

@@ -11,37 +11,39 @@ interface PaginacaoProps {
 }
 
 export function Paginacao(props: PaginacaoProps) {
-  const pagina_anterior = props.canPreviousPage;
-  const proxima_pagina = props.canNextPage;
-  const numero_pagina = props.pageCount;
+  const { gotoPage, nextPage, previousPage, canPreviousPage, canNextPage, pageCount } = props;
+
+  const pagina_anterior = canPreviousPage;
+  const proxima_pagina = canNextPage;
+  const numero_pagina = pageCount;
 
   return (
     <PaginationEstilizado>
       <PaginationItem>
         <PaginationLink
           first
-          onClick={() => props.gotoPage(0)}
+          onClick={() => gotoPage(0)}
           disabled={!pagina_anterior}
         />
       </PaginationItem>
       <PaginationItem>
         <PaginationLink
           previous
-          onClick={() => props.previousPage()}
+          onClick={() => previousPage()}
           disabled={!pagina_anterior}
         />
       </PaginationItem>
       <PaginationItem>
         <PaginationLink
           next
-          onClick={() => props.nextPage()}
+          onClick={() => nextPage()}
           disabled={!proxima_pagina}
         />
       </PaginationItem>
       <PaginationItem>
         <PaginationLink
           last
-          onClick={() => props.gotoPage(numero_pagina - 1)}
+          onClick={() => gotoPage(numero_pagina - 1)}
           disabled={!proxima_pagina}
         />
       </PaginationItem>

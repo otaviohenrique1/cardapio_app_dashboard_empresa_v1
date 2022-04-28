@@ -9,9 +9,12 @@ interface CampoFiltroGlobalTabelaProps {
 }
 
 export function CampoFiltroGlobalTabela(props: CampoFiltroGlobalTabelaProps) {
-  const [value, setValue] = useState(props.globalFilter);
+  const { globalFilter, setGlobalFilter } = props;
+  
+  const [value, setValue] = useState(globalFilter);
+
   const onChange = useAsyncDebounce(value => {
-    props.setGlobalFilter(value || undefined)
+    setGlobalFilter(value || undefined)
   }, 200)
 
   return (

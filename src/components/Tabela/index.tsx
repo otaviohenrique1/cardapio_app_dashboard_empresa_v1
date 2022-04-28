@@ -11,11 +11,13 @@ interface TabelaProps {
 }
 
 export function Tabela(props: TabelaProps) {
+  const { getTableProps, headerGroups, getTableBodyProps, page, prepareRow } = props;
+
   return (
     <Col md={12}>
-      <Table {...props.getTableProps()}>
+      <Table {...getTableProps()}>
         <thead>
-          {props.headerGroups.map(headerGroup => (
+          {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
@@ -30,12 +32,12 @@ export function Tabela(props: TabelaProps) {
             </tr>
           ))}
         </thead>
-        <tbody {...props.getTableBodyProps()}>
-          {(props.page.length === 0) ? (
+        <tbody {...getTableBodyProps()}>
+          {(page.length === 0) ? (
             <TabelaVazia />
           ) : (
-            props.page.slice(0, 20).map((row, i) => {
-              props.prepareRow(row);
+            page.slice(0, 20).map((row, i) => {
+              prepareRow(row);
               return (
                 <tr {...row.getRowProps()} className="bg-light">
                   {row.cells.map(cell => {

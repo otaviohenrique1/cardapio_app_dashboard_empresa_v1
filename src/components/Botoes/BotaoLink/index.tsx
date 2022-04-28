@@ -8,12 +8,13 @@ interface BotaoLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 export function BotaoLink(props: BotaoLinkProps) {
+  const { color, to, children } = props;
   return (
     <Link
-      className={`btn btn-${props.color}`}
+      className={`btn btn-${color}`}
       {...props}
-      to={props.to}
-    >{props.children}</Link>
+      to={to}
+    >{children}</Link>
   );
 }
 

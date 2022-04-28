@@ -6,6 +6,8 @@ interface QuantidadeItemsPorPaginaProps {
 }
 
 export function QuantidadeItemsPorPagina(props: QuantidadeItemsPorPaginaProps) {
+  const { pageSize, setPageSize } = props;
+
   const listaValoresQuantidadePagina = [10, 20, 30, 40, 50];
 
   return (
@@ -16,8 +18,8 @@ export function QuantidadeItemsPorPagina(props: QuantidadeItemsPorPaginaProps) {
         className="mb-0 me-3 fw-bold form-label"
       >Exibir</Label>
       <Select
-        pageSize={props.pageSize}
-        setPageSize={props.setPageSize}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
         data={listaValoresQuantidadePagina}
       />
     </Form>
@@ -29,15 +31,17 @@ interface SelectProps extends QuantidadeItemsPorPaginaProps {
 }
 
 function Select(props: SelectProps) {
+  const { data, pageSize, setPageSize } = props;
+
   return (
     <select
       className="form-select"
-      value={props.pageSize}
+      value={pageSize}
       onChange={event => {
         const numero_pagina = event.target.value;
-        props.setPageSize(Number(numero_pagina))
+        setPageSize(Number(numero_pagina))
       }}>
-      {props.data.map((pageSize) => (
+      {data.map((pageSize) => (
         <Item value={pageSize} key={pageSize} />
       ))}
     </select>
@@ -49,7 +53,9 @@ interface ItemProps {
 }
 
 function Item(props: ItemProps) {
+  const { value } = props;
+
   return (
-    <option value={props.value}>{props.value}</option>
+    <option value={value}>{value}</option>
   );
 }

@@ -14,13 +14,15 @@ interface FormularioAdministradorProps {
 }
 
 export function FormularioAdministrador(props: FormularioAdministradorProps) {
+  const { initialValues, validationSchema, onSubmit, voltarLink, enableReinitialize } = props;
+
   return (
     <Col md={12}>
       <Formik
-        initialValues={props.initialValues}
-        validationSchema={props.validationSchema}
-        onSubmit={props.onSubmit}
-        enableReinitialize={props.enableReinitialize}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        enableReinitialize={enableReinitialize}
       >
         {({ errors, touched, values }) => (
           <Form>
@@ -62,7 +64,7 @@ export function FormularioAdministrador(props: FormularioAdministradorProps) {
                 <ButtonGroup>
                   <Botao type="submit" color="primary">Salvar</Botao>
                   <Botao type="reset" color="danger">Limpar</Botao>
-                  <BotaoLink to={props.voltarLink} color="info">Voltar</BotaoLink>
+                  <BotaoLink to={voltarLink} color="info">Voltar</BotaoLink>
                 </ButtonGroup>
               </Col>
             </Row>

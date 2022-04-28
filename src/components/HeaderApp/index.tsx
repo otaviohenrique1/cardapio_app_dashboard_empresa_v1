@@ -11,6 +11,8 @@ interface HeaderAppProps {
 }
 
 export function HeaderApp(props: HeaderAppProps) {
+  const { data_usuario_logado } = props;
+
   const navigate = useNavigate();
 
   const [aberto, setAberto] = useState<boolean>(false);
@@ -55,7 +57,7 @@ export function HeaderApp(props: HeaderAppProps) {
           </NavItem>
           <Dropdown toggle={toggleDropdown} isOpen={dropdownAberto}>
             <DropdownToggle caret className="d-flex flex-row justify-content-center align-items-center">
-              <Titulo tag="h6" className="m-0">{props.data_usuario_logado.nome}</Titulo>
+              <Titulo tag="h6" className="m-0">{data_usuario_logado.nome}</Titulo>
               {/* <h6 className="m-0">{props.data_usuario_logado.nome}</h6> */}
               <BiUserCircle size={30} className="ms-2" />
             </DropdownToggle>

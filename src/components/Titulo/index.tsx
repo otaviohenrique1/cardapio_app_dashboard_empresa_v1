@@ -6,9 +6,11 @@ interface TituloProps extends HTMLAttributes<HTMLHeadingElement> {
 }
 
 export function Titulo(props: TituloProps) {
-  const Tag = props.tag;
+  const { tag, children } = props;
+
+  const Tag = tag;
   
   return (
-    <Tag {...props}>{props.children}</Tag>
+    <Tag {...props}>{children}</Tag>
   );
 }

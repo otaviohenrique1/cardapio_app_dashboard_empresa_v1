@@ -4,6 +4,7 @@ import { ButtonGroup, Col, Row } from "reactstrap";
 import { Botao } from "../../Botoes/Botao";
 import { BotaoLink } from "../../Botoes/BotaoLink";
 import { CampoInput, CampoInputProps } from "../../Campos/CampoInput";
+import { CampoSenhaAntiga } from "../../Campos/CampoSenhaAntiga";
 
 interface FormularioAdministradorProps {
   initialValues: AdministradorTypes;
@@ -11,10 +12,12 @@ interface FormularioAdministradorProps {
   onSubmit: (values: AdministradorTypes, helpers: FormikHelpers<AdministradorTypes>) => Promise<void>;
   voltarLink: To;
   enableReinitialize: boolean;
+  exibe_senha_antiga: boolean;
+  senha_antiga: string;
 }
 
 export function FormularioAdministrador(props: FormularioAdministradorProps) {
-  const { initialValues, validationSchema, onSubmit, voltarLink, enableReinitialize } = props;
+  const { initialValues, validationSchema, onSubmit, voltarLink, enableReinitialize, exibe_senha_antiga, senha_antiga } = props;
 
   return (
     <Col md={12}>
@@ -61,6 +64,9 @@ export function FormularioAdministrador(props: FormularioAdministradorProps) {
                     />
                   );
                 })}
+                {(exibe_senha_antiga) ? (
+                  <CampoSenhaAntiga senha_antiga={senha_antiga} />
+                ) : null}
                 <Col md={12} className="d-flex justify-content-end mt-5">
                   <ButtonGroup>
                     <Botao type="submit" color="primary">Salvar</Botao>

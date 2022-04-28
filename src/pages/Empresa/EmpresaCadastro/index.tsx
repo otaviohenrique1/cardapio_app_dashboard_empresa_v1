@@ -13,7 +13,7 @@ import { validacaoSchemaFormularioEmpresa } from "../../../utils/ValidacaoSchema
 export function EmpresaCadastro() {
   async function handleSubmit(values: EmpresaTypes, helpers: FormikHelpers<EmpresaTypes>) {
     /* Alterar caso for colocar o atributo ativo */
-    const { nome, email, senha } = values;
+    const { nome, email, senha, ativo } = values;
 
     let senha_formatada = FormatadorCrypto.mensagemSHA512(senha);
     let data_hora_formatada = FormatadorDados.GeradorDataHoraFormatada("yyyy-MM-dd HH:mm:ss");
@@ -23,7 +23,7 @@ export function EmpresaCadastro() {
       nome,
       email,
       senha: senha_formatada,
-      /* ativo, */
+      ativo,
       data_cadastro: data_hora_formatada,
       data_modificacao_cadastro: data_hora_formatada
     };

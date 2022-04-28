@@ -3,13 +3,13 @@ import { To } from "react-router-dom";
 import { ButtonGroup, Col, Row } from "reactstrap";
 import { Botao } from "../../Botoes/Botao";
 import { BotaoLink } from "../../Botoes/BotaoLink";
-// import { CampoCheckbox } from "../../Campos/CampoCheckbox";
-import { CampoInput } from "../../Campos/CampoInput";
+import { CampoCheckbox } from "../../Campos/CampoCheckbox";
+import { CampoInput, CampoInputProps } from "../../Campos/CampoInput";
 
 interface FormularioEmpresaProps {
-  initialValues: AdministradorTypes;
+  initialValues: EmpresaTypes;
   validationSchema: any;
-  onSubmit: (values: AdministradorTypes, helpers: FormikHelpers<AdministradorTypes>) => Promise<void>;
+  onSubmit: (values: EmpresaTypes, helpers: FormikHelpers<EmpresaTypes>) => Promise<void>;
   voltarLink: To;
   enableReinitialize: boolean;
 }
@@ -24,53 +24,50 @@ export function FormularioEmpresa(props: FormularioEmpresaProps) {
         onSubmit={onSubmit}
         enableReinitialize={enableReinitialize}
       >
-        {({ errors, touched, values }) => (
-          <Form>
-            <Row>
-              <CampoInput
-                md={12}
-                id="nome"
-                label="Nome"
-                name="nome"
-                type="text"
-                placeholder="Digite o nome"
-                value={values.nome}
-                error={errors.nome}
-                touched={touched.nome}
-              />
-              <CampoInput
-                md={12}
-                id="email"
-                label="Email"
-                name="email"
-                type="email"
-                placeholder="Digite o email"
-                value={`${values.email}`}
-                error={errors.email}
-                touched={touched.email}
-              />
-              <CampoInput
-                md={12}
-                id="senha"
-                label="Senha"
-                name="senha"
-                type="password"
-                placeholder="Digite a senha"
-                value={`${values.senha}`}
-                error={errors.senha}
-                touched={touched.senha}
-              />
-              {/* <CampoCheckbox name="ativo" checked={(values.ativo) ? true : false}>Ativo</CampoCheckbox> */}
-              <Col md={12} className="d-flex justify-content-end pt-3">
-                <ButtonGroup>
-                  <Botao type="submit" color="primary">Salvar</Botao>
-                  <Botao type="reset" color="danger">Limpar</Botao>
-                  <BotaoLink to={voltarLink} color="info">Voltar</BotaoLink>
-                </ButtonGroup>
-              </Col>
-            </Row>
-          </Form>
-        )}
+        {(formik_props) => {
+          const { errors, touched, values } = formik_props;
+
+          const lista_campos_dados: CampoInputProps[] = [
+            {
+              md: 12, type: "text", id: "nome", name: "nome", label: "Nome",
+              placeholder: "Digite o seu nome", value: values.nome,
+              error: errors.nome, touched: touched.nome
+            },
+            {
+              md: 12, type: "text", id: "email", name: "email",
+              label: "E-mail", placeholder: "Digite o seu e-mail",
+              value: values.email, error: errors.email, touched: touched.email
+            },
+            {
+              md: 12, type: "password", id: "senha", name: "senha", label: "Senha",
+              placeholder: "Digite a sua senha", value: values.senha,
+              error: errors.senha, touched: touched.senha
+            }
+          ];
+
+          return (
+            <Form>
+              <Row>
+                {lista_campos_dados.map((item, index) => {
+                  const { md, id, label, name, type, placeholder, value, error, touched } = item;
+                  return (
+                    <CampoInput key={index} md={md} id={id} label={label} name={name} type={type}
+                      placeholder={placeholder} value={value} error={error} touched={touched}
+                    />
+                  );
+                })}
+                <CampoCheckbox name="ativo" checked={(values.ativo) ? true : false}>Ativo</CampoCheckbox>
+                <Col md={12} className="d-flex justify-content-end pt-3">
+                  <ButtonGroup>
+                    <Botao type="submit" color="primary">Salvar</Botao>
+                    <Botao type="reset" color="danger">Limpar</Botao>
+                    <BotaoLink to={voltarLink} color="info">Voltar</BotaoLink>
+                  </ButtonGroup>
+                </Col>
+              </Row>
+            </Form>
+          );
+        }}
       </Formik>
     </Col>
   );

@@ -24,7 +24,8 @@ export function AdministradorDados() {
 
         const senha_formatada = FormatadorDados.FormataExibicaoSenha(senha);
         const data_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_cadastro, "dd/MM/yyyy HH:mm:ss");
-        const data_modificacao_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_modificacao_cadastro, "dd/MM/yyyy HH:mm:ss") || 'Data2';
+        const data_modificacao_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_modificacao_cadastro, "dd/MM/yyyy HH:mm:ss");
+        // const data_modificacao_cadastro_formatada = FormatadorDados.FormatadorDataHora(data_modificacao_cadastro, "dd/MM/yyyy HH:mm:ss") || 'Data2';
 
         const data = {
           id,

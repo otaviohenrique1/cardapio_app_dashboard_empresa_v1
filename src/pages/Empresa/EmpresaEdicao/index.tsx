@@ -1,6 +1,6 @@
 import { Col, Row } from "reactstrap";
 import { Titulo } from "../../../components/Titulo";
-import { ApiBuscaDadosUmaEmpresa, ApiEdicaoEmpresa } from "../../../utils/api";
+import { ApiBuscaDadosUmaEmpresa, ApiEdicaoEmpresa, ApiEdicaoEmpresaTypes } from "../../../utils/api";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ContainerApp } from "../../../components/ContainerApp";
@@ -21,10 +21,8 @@ export function EmpresaEdicao() {
     // api.get(`usuario/${id}`)
     ApiBuscaDadosUmaEmpresa(id)
       .then((item) => {
-        const nome = item.data.nome;
-        const email = item.data.email;
-        const senha = item.data.senha;
-        const data = { nome, email, senha };
+        const { nome, email, senha, ativo } = item.data;
+        const data = { nome, email, senha, ativo };
         setData(data);
       })
       .catch((erro) => {
@@ -33,18 +31,19 @@ export function EmpresaEdicao() {
       });
   }, [id]);
 
-  async function handleSubmit(values: AdministradorTypes) {
+  async function handleSubmit(values: EmpresaTypes) {
     if (!id) { return; }
-    const { nome, email, senha } = values;
+    const { nome, email, senha, ativo } = values;
     // const ativo = values.ativo;
     let senha_formatada = FormatadorDados.FormataExibicaoSenha(senha, 12);
     let data_modificacao_cadastro = FormatadorDados.GeradorDataHoraFormatada("yyyy-MM-dd HH:mm:ss");
 
-    const data = {
+    const data: ApiEdicaoEmpresaTypes = {
       'id': id,
       'nome': nome,
       'email': email,
       'senha': senha_formatada,
+      'ativo': ativo,
       'data_modificacao_cadastro': data_modificacao_cadastro,
     };
 
@@ -59,11 +58,11 @@ export function EmpresaEdicao() {
       });
   }
 
-  const dadosDaEmpresa: AdministradorTypes = {
+  const dadosDaEmpresa: EmpresaTypes = {
     nome: data.nome || "",
     email: data.email || "",
     senha: data.senha || "",
-    // ativo: data.ativo || false,
+    ativo: data.ativo || false,
   };
 
   return (

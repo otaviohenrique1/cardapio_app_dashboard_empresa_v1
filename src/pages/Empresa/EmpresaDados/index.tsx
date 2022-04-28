@@ -22,18 +22,14 @@ export function EmpresaDados() {
       .then((item) => {
         if (!id) { return; }
 
-        const { nome, email, senha, codigo, data_cadastro, data_modificacao_cadastro } = item.data;
+        const { nome, email, senha, codigo, ativo, data_cadastro, data_modificacao_cadastro } = item.data;
 
         const senha_formatada = FormatadorDados.FormataExibicaoSenha(senha, 12);
         const data_cadastro_formatada = FormatadorDados.FormataData(data_cadastro);
         const data_modificacao_cadastro_formatada = FormatadorDados.FormataData(data_modificacao_cadastro);
 
         const data = {
-          id,
-          nome,
-          email,
-          senha: senha_formatada,
-          codigo,
+          id, nome, email, senha: senha_formatada, ativo, codigo,
           data_cadastro: data_cadastro_formatada,
           data_modificacao_cadastro: data_modificacao_cadastro_formatada
         };
@@ -46,12 +42,13 @@ export function EmpresaDados() {
       });
   }, [id]);
 
-  const { email, senha, codigo, data_cadastro, data_modificacao_cadastro } = data;
+  const { email, senha, codigo, ativo, data_cadastro, data_modificacao_cadastro } = data;
 
   const item_lista_ficha_dados: ItemListaFichaDadosProps[] = [
     { titulo:"Email", valor: email },
     { titulo:"Senha", valor: senha },
     { titulo:"Código", valor: codigo },
+    { titulo:"Cadastro ativo", valor: (ativo) ? 'Ativo' : 'Inativo' },
     { titulo:"Data de cadastro", valor: data_cadastro },
     { titulo:"Data de atualização do cadastro", valor: data_modificacao_cadastro },
   ];

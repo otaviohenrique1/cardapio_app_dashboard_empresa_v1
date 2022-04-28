@@ -69,6 +69,7 @@ export interface ApiCadastroEmpresaTypes {
   nome: string;
   email: string;
   senha: string;
+  ativo: boolean | string;
   data_cadastro: string;
   data_modificacao_cadastro: string;
 }
@@ -84,6 +85,7 @@ export interface ApiEdicaoEmpresaTypes {
   nome: string;
   email: string;
   senha: string;
+  ativo: boolean | string;
   data_modificacao_cadastro: string;
 }
 

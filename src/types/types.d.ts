@@ -31,6 +31,7 @@ interface TabelaTypes {
   /* Alterar se precisar colocar atributo cadastro ativo */
   id: number;
   nome: string;
+  ativo: boolean | string;
   // ativo: string;
 }
 
@@ -50,6 +51,7 @@ interface EmpresaTypes {
   nome: string;
   email: string;
   senha: string;
+  ativo: boolean | string;
 }
 
 interface EmpresaDadosTypes extends EmpresaTypes {

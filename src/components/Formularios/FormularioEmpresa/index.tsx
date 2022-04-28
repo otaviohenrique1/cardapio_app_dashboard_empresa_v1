@@ -5,6 +5,7 @@ import { Botao } from "../../Botoes/Botao";
 import { BotaoLink } from "../../Botoes/BotaoLink";
 import { CampoCheckbox } from "../../Campos/CampoCheckbox";
 import { CampoInput, CampoInputProps } from "../../Campos/CampoInput";
+import { CampoSenhaAntiga } from "../../Campos/CampoSenhaAntiga";
 
 interface FormularioEmpresaProps {
   initialValues: EmpresaTypes;
@@ -12,9 +13,12 @@ interface FormularioEmpresaProps {
   onSubmit: (values: EmpresaTypes, helpers: FormikHelpers<EmpresaTypes>) => Promise<void>;
   voltarLink: To;
   enableReinitialize: boolean;
+  exibe_senha_antiga: boolean;
+  senha_antiga: string;
 }
+
 export function FormularioEmpresa(props: FormularioEmpresaProps) {
-  const { initialValues, validationSchema, onSubmit, voltarLink, enableReinitialize } = props;
+  const { initialValues, validationSchema, onSubmit, voltarLink, enableReinitialize, exibe_senha_antiga, senha_antiga } = props;
 
   return (
     <Col md={12}>
@@ -42,6 +46,11 @@ export function FormularioEmpresa(props: FormularioEmpresaProps) {
               md: 12, type: "password", id: "senha", name: "senha", label: "Senha",
               placeholder: "Digite a sua senha", value: values.senha,
               error: errors.senha, touched: touched.senha
+            },
+            {
+              md: 12, type: "password", id: "confirmacao_senha", name: "confirmacao_senha", label: "Confirme a senha",
+              placeholder: "Digite novamente a sua senha", value: values.confirmacao_senha,
+              error: errors.confirmacao_senha, touched: touched.confirmacao_senha
             }
           ];
 
@@ -57,6 +66,9 @@ export function FormularioEmpresa(props: FormularioEmpresaProps) {
                   );
                 })}
                 <CampoCheckbox name="ativo" checked={(values.ativo) ? true : false}>Ativo</CampoCheckbox>
+                {(exibe_senha_antiga) ? (
+                  <CampoSenhaAntiga senha_antiga={senha_antiga} />
+                ) : null}
                 <Col md={12} className="d-flex justify-content-end pt-3">
                   <ButtonGroup>
                     <Botao type="submit" color="primary">Salvar</Botao>
